@@ -22,22 +22,22 @@ const signUp = async (req,resp) =>{
             let hashedPassword;
             try{
                 hashedPassword = await bcrypt.hash(password,10);
+                await users.create({
+                name:name,email:email,password:hashedPassword
+                })
+                resp.status(200).json({
+                message:"Id Created",
+                data:{name,email,hashedPassword},
+                success:true
+                })
             }
             catch(error){
                 resp.status(500).json({
-                    message:"Error while Hashing",
+                    message:"Error while Creating Entry in database",
                     data:{},
                     success:false
                 })
             }
-            users.create({
-            name:name,email:email,password:hashedPassword
-            })
-            resp.status(200).json({
-            message:"Id Created",
-            data:{name,email,hashedPassword},
-            success:true
-            })
         }
         else{
             resp.status(400).json({
