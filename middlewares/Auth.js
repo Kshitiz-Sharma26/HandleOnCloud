@@ -4,8 +4,8 @@ require("dotenv").config();
 const auth = async (req,resp,next) => {
     try{
         // console.log(req.cookies.token);
-        const token = req.header("Authentication").replace("Bearer ","");
-        console.log(token);
+        // const token = req.header("Authentication").replace("Bearer ","");
+        const token = req.cookies.token;
         if(!token){
             resp.status(404).json({
                 message: "Token Missing",

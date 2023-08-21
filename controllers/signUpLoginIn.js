@@ -80,7 +80,8 @@ try{
                 const options = {
                     //expires in 1 hr from now
                     expiresIn : new Date(Date.now() + 60*60*1000),
-                    httpOnly:true
+                    httpOnly:true,
+                    sameSite:"strict"
                 }
                 exists.password = undefined;
                 // exists.token = signature;

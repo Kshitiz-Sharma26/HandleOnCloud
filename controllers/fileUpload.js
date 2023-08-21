@@ -2,7 +2,7 @@
 const cloudinary = require("cloudinary").v2; 
 const fileCollection = require("../models/file");
 
-const localImgUpload = async (req,resp) => {
+const localImgUpload = (req,resp) => {
     try{
         //assuming that file is sent in the request in file key.
         const file = req.files.file;
@@ -14,7 +14,7 @@ const localImgUpload = async (req,resp) => {
     
         file.mv(path, (error) => {
             if(error){
-                resp.status(404).json({
+                resp.status(500).json({
                     success: false,
                     message:"Error while uploading file."+ error
                 })
@@ -26,14 +26,14 @@ const localImgUpload = async (req,resp) => {
             }
         })
     }catch(error){
-        resp.status(400).json({
+        resp.status(500).json({
             success:false,
             message:"File not uploaded."
         })
     }
 }
 
-const auth = require("../middlewares/Auth.js");
+// const auth = require("../middlewares/Auth.js");
 
 //controller for uploading image on cloudinary
 const cloudUpload = async (req,resp) => {
@@ -45,14 +45,14 @@ const cloudUpload = async (req,resp) => {
         const allowed_types = ["jpg","jpeg","png","mp4"];
         console.log(allowed_types.includes(file.name.split(".")[1]));
         if(!allowed_types.includes(extension)){
-            resp.status(500).json({
+            resp.status(404).json({
                 message:"File type not supported by this route.",
                 success:false
             })
         }
         //limiting the file size upto 10MB
         if(file.bytes >= 10*Math.pow(2,20)){
-            resp.status(400).json({
+            resp.status(404).json({
                 message: "Size Limit exceeded",
                 success: false
             })
@@ -84,7 +84,7 @@ const cloudUpload = async (req,resp) => {
             })
         }
         else{
-            resp.status(404).json({
+            resp.status(500).json({
                 message:"Error while uploading on cloudinary",
                 success:false
             })
@@ -98,3 +98,19 @@ const cloudUpload = async (req,resp) => {
 }
 
 module.exports = {localImgUpload,cloudUpload};
+
+
+// const obj = {
+//     name : "Kshitiz",
+//     rollnumber : 53,
+//     marks : 100
+// }
+// let token = "dhsdihhd.skdsknkjsdn.idsidsndnkiu";
+// fetch("http://localhost:3000/history",{
+//     method:"post",
+//     headers : {
+//         "Authentication" : `Bearer ${token}`
+//     },
+//     body: JSON.stringify(obj)
+// }).then((resp)=>resp.json())
+// .catch((err)=>console.log(err));

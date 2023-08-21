@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
 const fileUpload = require("express-fileupload");
-
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
+app.use(cookieParser());
 
 //Middlewares
 // populates req.body with json data 
